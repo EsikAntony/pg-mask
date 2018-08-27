@@ -35,13 +35,13 @@ select 'select ''copy "'||nam.nspname||'".'||tab.relname||'('||string_agg(col.at
 	when 'rand'
 	then case format_type(col.atttypid,null)
 	     when 'numeric'
-	     then 'abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||')%'||col.attname
+	     then 'abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||')%greatest(abs('||col.attname||'),1)'
 	     when 'integer'
-	     then '(abs((''x''||encode(gen_random_bytes(4),''hex''))::bit(32)::int)*sign('||col.attname||'))::int%'||col.attname
+	     then '(abs((''x''||encode(gen_random_bytes(4),''hex''))::bit(32)::int)*sign('||col.attname||'))::int%greatest(abs('||col.attname||'),1)'
 	     when 'bigint'
-	     then '(abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||'))::int8%'||col.attname
+	     then '(abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||'))::int8%greatest(abs('||col.attname||'),1)'
 	     when 'double precision'
-	     then '(abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||'::numberic)%'||col.attname||'::numeric)||''::float8'''
+	     then '(abs((''x''||encode(gen_random_bytes(8),''hex''))::bit(64)::int8)*sign('||col.attname||'::numberic)%greatest(abs('||col.attname||'),1)::numeric)||''::float8'''
 	     when 'character varying'
 	     then 'substring(encode(gen_random_bytes(32),''base64'')for char_length('||col.attname||'))'
 	     when 'character'
