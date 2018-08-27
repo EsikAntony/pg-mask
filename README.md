@@ -12,7 +12,7 @@ You can easily edit the column descriptions using pgadmin4 or DBeaver.
 
 After marking the sensitive columns, you can export all data of *owner*:
 
-*path*/pg-mask/bin/mask.sh *dbname* *ownername*
+*path*/pg-mask/bin/mask.sh *dbhost* *dbname* *ownername*
 
 This will create three files in the current directory:
 - pre_data.sql
@@ -21,4 +21,4 @@ This will create three files in the current directory:
 
 These files should be copied to the target system. To import them into the target database, run this in the target directory:
 
-*path*/pg-mask/bin/import_masked.sh *dbname* *ownername*
+*path*/pg-mask/bin/import_masked.sh *dbhost* *dbname* *ownername*
