@@ -73,9 +73,17 @@ where tab.relkind       ='r'::char
   and pg_get_userbyid(tab.relowner)=user
   and col.attnum>0
   and not col.attisdropped
---  and tab.relname='ad_menu_bkp_beforeimportwebui'
 group by nam.nspname,tab.relname
 ;
+
+with s as
+(select
+	 'public.' || c.relname         as seq_name,
+	 nextval(c.relname :: regclass) as seq_value
+ from pg_class c
+ where c.relkind = 'S')
+select 'select ''select pg_catalog.setval(''''' || s.seq_name || ''''', ' || s.seq_value || ', true);'';'
+from s;
 \o masked_data.sql
 \i mask.sql
 \o
